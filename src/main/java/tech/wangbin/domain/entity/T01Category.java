@@ -23,13 +23,17 @@ public class T01Category extends BaseEntity {
   @TableId(value = "id", type = IdType.AUTO)
   private Integer id;
 
+  private String icon;
+
   private String name;
 
   private String subName;
 
-  private Integer parentId;
+  private Integer pid;
 
   private Integer count;
+
+  private Integer sort;
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private LocalDateTime createTime;
