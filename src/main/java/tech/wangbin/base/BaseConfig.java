@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 import tech.wangbin.base.utils.CorsConfig;
 import tech.wangbin.base.support.JsonFilter;
@@ -15,6 +16,7 @@ import tech.wangbin.base.support.JsonFilter;
 public class BaseConfig {
 
   @Bean
+  @Order(1)
   public OncePerRequestFilter jsonFilter() {
     return new JsonFilter();
   }
