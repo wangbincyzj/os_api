@@ -1,6 +1,6 @@
 package tech.wangbin.domain.mapper;
 
-import tech.wangbin.domain.entity.T03User;
+import tech.wangbin.domain.entity.T01File;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author WangBin
- * @since 2021-04-20
+ * @since 2021-06-08
  */
-public interface T03UserMapper extends BaseMapper<T03User> {
+public interface T01FileMapper extends BaseMapper<T01File> {
 
 }

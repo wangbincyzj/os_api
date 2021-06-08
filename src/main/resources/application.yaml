@@ -1,15 +1,17 @@
 server:
   port: 10086
+
 spring:
+
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     encoding: utf-8
   datasource:
-    url: jdbc:mysql://47.95.192.129:3306/blog?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://47.95.192.129:3306/os_api?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: blog
-    password: wangbin
+    username: wangbin
+    password: 1234567dyy
     type: com.alibaba.druid.pool.DruidDataSource
     initial-size: 5
     minIdle: 5
@@ -33,7 +35,8 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
-#jwt:
-#  config:
-#    key: helloworld
-#    ttl: 3600000
+minio:
+  endpoint: 47.95.192.129
+  port: 9000
+  accessKey: wangbin
+  secretKey: 1234567dyy

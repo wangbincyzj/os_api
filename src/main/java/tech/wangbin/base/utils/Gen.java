@@ -29,10 +29,10 @@ public class Gen {
   static Class<?> entity = BaseEntity.class;
 
   // 数据库配置
-  static final String DataSourceUrl = "jdbc:mysql://47.95.192.129:3306/blog?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+  static final String DataSourceUrl = "jdbc:mysql://47.95.192.129:3306/os_api?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
   static final String DataSourceDriverClassName = "com.mysql.cj.jdbc.Driver";
-  static final String DataSourceUsername = "blog";
-  static final String DataSourcePassword = "wangbin";
+  static final String DataSourceUsername = "wangbin";
+  static final String DataSourcePassword = "1234567dyy";
 
   public static void main(String[] args) {
     AutoGenerator mpg = new AutoGenerator();

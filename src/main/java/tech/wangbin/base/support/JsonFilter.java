@@ -22,15 +22,19 @@ public class JsonFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-    RequestWrapper requestWrapper = new RequestWrapper(httpServletRequest);
-    String contentType = requestWrapper.getHeader("Content-Type");
+    String contentType = httpServletRequest.getHeader("Content-Type");
     if ("application/json".equals(contentType)) {
+      RequestWrapper requestWrapper = new RequestWrapper(httpServletRequest);
       Map<String, String> o = JSON.parseObject(requestWrapper.getInputStream(), Map.class);
       o.keySet().forEach(key -> {
         httpServletRequest.setAttribute(key, o.get(key));
       });
+      filterChain.doFilter(requestWrapper, httpServletResponse);
+    }else{
+      filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
-    filterChain.doFilter(requestWrapper, httpServletResponse);
+
+
   }
 
   public static class RequestWrapper extends HttpServletRequestWrapper {
