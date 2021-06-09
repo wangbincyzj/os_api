@@ -140,7 +140,9 @@ public class T01FileController extends BaseController<T01File> {
     String name = strings[0];
     String ext = strings[1];
     String hash = strings[2];
-    InputStream fileStream = service.getFileStream(ext, name + "/" + hash);
+    String bucketName = "";
+    bucketName = ext.length() < 3 ? ext + "00" : ext;
+    InputStream fileStream = service.getFileStream(bucketName, name + "/" + hash);
     StreamUtils.copy(fileStream, resp.getOutputStream());
   }
 
