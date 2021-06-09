@@ -41,6 +41,8 @@ public class T01File extends BaseEntity {
    */
   private Integer pid;
 
+  private Long size;
+
   /**
    * 是否为目录
    */
@@ -52,6 +54,8 @@ public class T01File extends BaseEntity {
   private String password;
 
   private String src;
+
+  private String icon;
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private LocalDateTime createTime;

@@ -1,6 +1,7 @@
 package tech.wangbin.domain.controller;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.minio.MinioClient;
 import io.minio.errors.*;
 import io.minio.messages.Bucket;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import tech.wangbin.domain.utils.MinioUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -95,11 +97,13 @@ public class T01FileController extends BaseController<T01File> {
 
 
   @PostMapping("/newFile")
-  public Resp newFile(MultipartFile content, @RequestParam Map<String, String> map) {
+  public Resp newFile(MultipartFile file, @RequestParam Map<String, String> map) {
     // 生产时间戳值
     String src = map.get("src");
     String ext = map.get("ext");
     String name = map.get("name");
+    String pid = map.get("pid");
+    String bucketName;
     String hash;
     if (src == null) {
       hash = String.valueOf(new Date().getTime());
@@ -110,16 +114,28 @@ public class T01FileController extends BaseController<T01File> {
       ext = strings[1];
       hash = strings[2];
     }
-    String errMsg = service.newFIle(ext, name + "/" + hash, content);
+    if(ext.length() < 3){
+      bucketName = ext + "00";
+    }else {
+      bucketName = ext;
+    }
+    String errMsg = service.newFIle(bucketName, name + "/" + hash, file);
     if (errMsg == null) {
-      return Resp.ok(src);
+      T01File newFile = new T01File();
+      newFile.setName(name);
+      newFile.setExt(ext);
+      newFile.setSrc(src);
+      newFile.setIsDir(false);
+      newFile.setSize(file.getSize());
+      newFile.setPid(Integer.valueOf(pid));
+      return this.insert(newFile);
     } else {
       return Resp.err(errMsg);
     }
   }
 
-  @GetMapping("/fileStream")
-  public void getFileStream(String src, HttpServletResponse resp) throws IOException {
+  @GetMapping("/fileStream/{src}")
+  public void getFileStream(@PathVariable("src") String src, HttpServletResponse resp) throws IOException {
     String[] strings = src.split("-");
     String name = strings[0];
     String ext = strings[1];
