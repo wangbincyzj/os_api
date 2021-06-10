@@ -42,7 +42,8 @@ public class BaseController<T extends BaseEntity> {
 
   public Resp insert(T t) {
     t.setCreateTime(LocalDateTime.now());
-    return Resp.ok(baseService.save(t));
+    boolean save = baseService.save(t);
+    return Resp.ok(t.getId());
   }
 
   public Resp update(T t){

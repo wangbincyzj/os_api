@@ -7,6 +7,7 @@ import io.minio.errors.*;
 import io.minio.messages.Bucket;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tech.wangbin.domain.service.IT01FileService;
@@ -96,41 +97,17 @@ public class T01FileController extends BaseController<T01File> {
   }
 
 
-  @PostMapping("/newFile")
+  @RequestMapping("/newFile")
   public Resp newFile(MultipartFile file, @RequestParam Map<String, String> map) {
-    // 生产时间戳值
-    String src = map.get("src");
-    String ext = map.get("ext");
-    String name = map.get("name");
-    String pid = map.get("pid");
-    String bucketName;
-    String hash;
-    if (src == null) {
-      hash = String.valueOf(new Date().getTime());
-      src = name + "-" + ext + "-" + hash;
+    T01File newFile = service.newFIle(file, map);
+    if(newFile!=null){
+      if (newFile.getId() != null) {
+        return this.update(newFile);
+      } else {
+        return this.insert(newFile);
+      }
     }else{
-      String[] strings = src.split("-");
-      name = strings[0];
-      ext = strings[1];
-      hash = strings[2];
-    }
-    if(ext.length() < 3){
-      bucketName = ext + "00";
-    }else {
-      bucketName = ext;
-    }
-    String errMsg = service.newFIle(bucketName, name + "/" + hash, file);
-    if (errMsg == null) {
-      T01File newFile = new T01File();
-      newFile.setName(name);
-      newFile.setExt(ext);
-      newFile.setSrc(src);
-      newFile.setIsDir(false);
-      newFile.setSize(file.getSize());
-      newFile.setPid(Integer.valueOf(pid));
-      return this.insert(newFile);
-    } else {
-      return Resp.err(errMsg);
+      return Resp.err("");
     }
   }
 
