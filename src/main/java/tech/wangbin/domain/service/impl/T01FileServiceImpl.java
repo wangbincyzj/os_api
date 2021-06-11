@@ -102,6 +102,7 @@ public class T01FileServiceImpl extends ServiceImpl<T01FileMapper, T01File> impl
 
   @Override
   public String getFileUrl(String bucketName, String fileName) {
-    return minioUtil.getObjectUrl(bucketName, fileName);
+    return minioUtil.presignedGetObject(bucketName, fileName, 604800);
   }
+
 }

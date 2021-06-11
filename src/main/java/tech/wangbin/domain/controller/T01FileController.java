@@ -130,6 +130,12 @@ public class T01FileController extends BaseController<T01File> {
     String ext = strings[1];
     String hash = strings[2];
     String url = service.getFileUrl(ext, name + "/" + hash);
+
     return Resp.ok(url);
+  }
+
+  @GetMapping("/test")
+  private void test(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    resp.sendRedirect("/hello");
   }
 }

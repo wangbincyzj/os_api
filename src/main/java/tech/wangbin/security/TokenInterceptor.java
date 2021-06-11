@@ -25,13 +25,14 @@ public class TokenInterceptor extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws ServletException, IOException {
-    // boolean isLogin = req.getRequestURI().equals(LOGIN_URI) && req.getMethod().equals("POST");
-    // if (!isLogin && !req.getMethod().equals("GET")) {
-    //   UserEntity user = userService.getUser(req.getHeader("token"));
-    //   if(user==null){
-    //     throw new RuntimeException("未登录");
-    //   }
-    // }
+    boolean isLogin = req.getRequestURI().equals(LOGIN_URI) && req.getMethod().equals("POST");
+
+    if (!isLogin && !req.getMethod().equals("GET")  && !req.getMethod().equals("OPTIONS")) {
+      UserEntity user = userService.getUser(req.getHeader("token"));
+      if(user==null){
+        throw new RuntimeException("未登录");
+      }
+    }
     chain.doFilter(req, resp);
   }
 }
