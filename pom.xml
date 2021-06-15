@@ -90,11 +90,16 @@
       <artifactId>freemarker</artifactId>
       <version>2.3.30</version>
     </dependency>
-
+    <!--minio-client-->
     <dependency>
       <groupId>io.minio</groupId>
       <artifactId>minio</artifactId>
       <version>7.0.2</version>
+    </dependency>
+    <!--websocket-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-websocket</artifactId>
     </dependency>
   </dependencies>
 

@@ -32,6 +32,8 @@ public class T02User extends UserEntity {
 
   private String role;
 
+  private String avatar;
+
   private String trueName;
 
   private String token;
