@@ -36,6 +36,8 @@ public class T01File extends BaseEntity {
    */
   private String ext;
 
+  private String src;
+
   /**
    * 父id
    */
@@ -53,7 +55,7 @@ public class T01File extends BaseEntity {
    */
   private String password;
 
-  private String src;
+
 
   private String icon;
 

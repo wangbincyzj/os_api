@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author WangBin
@@ -17,9 +17,12 @@ import java.util.Map;
  */
 public interface IT01FileService extends IService<T01File> {
   String newFIle(String bucketName, String fileName, MultipartFile file);
+
   T01File newFIle(MultipartFile file, Map<String, String> map);
 
   InputStream getFileStream(String bucketName, String fileName);
 
   String getFileUrl(String bucketName, String fileName);
+
+  String uploadFile(MultipartFile file, String fileName);
 }

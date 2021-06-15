@@ -28,7 +28,6 @@ public class T01FileServiceImpl extends ServiceImpl<T01FileMapper, T01File> impl
   @Resource
   private MinioUtil minioUtil;
 
-
   @Override
   public String newFIle(String bucketName, String fileName, MultipartFile file) {
     try {
@@ -103,6 +102,16 @@ public class T01FileServiceImpl extends ServiceImpl<T01FileMapper, T01File> impl
   @Override
   public String getFileUrl(String bucketName, String fileName) {
     return minioUtil.presignedGetObject(bucketName, fileName, 604800);
+  }
+
+  @Override
+  public String uploadFile(MultipartFile file, String fileName) {
+    try {
+      minioUtil.putObject("osapi", file, fileName);
+      return null;
+    }catch (Exception e){
+      return e.toString();
+    }
   }
 
 }

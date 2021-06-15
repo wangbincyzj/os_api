@@ -1,13 +1,10 @@
 package tech.wangbin.domain.controller;
 
+
 import cn.hutool.core.date.DateUtil;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.minio.MinioClient;
-import io.minio.errors.*;
-import io.minio.messages.Bucket;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.util.ObjectUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tech.wangbin.domain.service.IT01FileService;
@@ -20,13 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
-import tech.wangbin.domain.utils.MinioUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +35,9 @@ import java.util.Map;
 public class T01FileController extends BaseController<T01File> {
   @Resource
   private IT01FileService service;
+
+  @Value("osapi")
+  private String bucketName;
 
   public T01FileController(IT01FileService service) {
     super(service);
@@ -100,42 +96,40 @@ public class T01FileController extends BaseController<T01File> {
   @RequestMapping("/newFile")
   public Resp newFile(MultipartFile file, @RequestParam Map<String, String> map) {
     T01File newFile = service.newFIle(file, map);
-    if(newFile!=null){
+    if (newFile != null) {
       if (newFile.getId() != null) {
         return this.update(newFile);
       } else {
         return this.insert(newFile);
       }
-    }else{
+    } else {
       return Resp.err("");
     }
   }
 
   @GetMapping("/fileStream/{src}")
   public void getFileStream(@PathVariable("src") String src, HttpServletResponse resp) throws IOException {
-    String[] strings = src.split("-");
-    String name = strings[0];
-    String ext = strings[1];
-    String hash = strings[2];
-    String bucketName = "";
-    bucketName = ext.length() < 3 ? ext + "00" : ext;
-    InputStream fileStream = service.getFileStream(bucketName, name + "/" + hash);
+    InputStream fileStream = service.getFileStream(bucketName, src);
     StreamUtils.copy(fileStream, resp.getOutputStream());
   }
 
   @GetMapping("/fileUrl/{src}")
-  public Resp getFileUrl(@PathVariable("src") String src, HttpServletResponse resp) {
-    String[] strings = src.split("-");
-    String name = strings[0];
-    String ext = strings[1];
-    String hash = strings[2];
-    String url = service.getFileUrl(ext, name + "/" + hash);
-
+  public Resp getFileUrl(@PathVariable("src") String src) {
+    String url = service.getFileUrl(bucketName, src);
     return Resp.ok(url);
   }
 
-  @GetMapping("/test")
-  private void test(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    resp.sendRedirect("/hello");
+  @PostMapping("/upload")
+  private Resp upload(MultipartFile file, String fileName) {
+    if (fileName == null) {
+      fileName = file.getOriginalFilename();
+    }
+    fileName = new Date().getTime() + "-" + fileName;
+    String errMsg = this.service.uploadFile(file, fileName);
+    if (errMsg != null) {
+      return Resp.err(errMsg);
+    }else{
+      return Resp.ok(fileName);
+    }
   }
 }
