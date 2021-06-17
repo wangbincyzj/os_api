@@ -33,7 +33,7 @@ public class WebsocketMessageHandler implements WebSocketHandler {
     Integer to = message.getTo();
     WebSocketSession session = users.get(to);
     if(session!=null){
-      session.sendMessage(WebsocketSendMessage.p2pMessage(fromUser.getId(),message.getData()));
+      session.sendMessage(WebsocketSendMessage.p2pMessage(fromUser,message.getData()));
     }
   }
 

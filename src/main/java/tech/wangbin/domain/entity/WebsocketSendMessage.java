@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import org.springframework.web.socket.TextMessage;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,19 +20,25 @@ public class WebsocketSendMessage {
   /*
   * 发送人ID
   * */
-  private Integer from;
+  private T02User from;
 
   /**
    * 数据主体
    */
   private Object data;
 
+  /**
+   * 时间戳
+   */
+  private long timestamp;
 
-  public static TextMessage p2pMessage(Integer fromId, Object data) {
+
+  public static TextMessage p2pMessage(T02User fromId, Object data) {
     WebsocketSendMessage message = new WebsocketSendMessage();
     message.setFrom(fromId);
     message.setData(data);
     message.setType(P2P_MESSAGE);
+    message.setTimestamp(new Date().getTime());
     return new TextMessage(JSONObject.toJSONString(message));
   }
 
@@ -39,7 +46,9 @@ public class WebsocketSendMessage {
     WebsocketSendMessage message = new WebsocketSendMessage();
     message.setType(UPDATE);
     message.setData(users);
+    message.setTimestamp(new Date().getTime());
     return new TextMessage(JSONObject.toJSONString(message));
   }
 }
+
 

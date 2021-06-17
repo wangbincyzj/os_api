@@ -18,4 +18,9 @@ public class WebsocketReceiveMessage {
    * 数据主体
    */
   private Object data;
+
+  /**
+   * 时间戳
+   */
+  private long timestamp;
 }
