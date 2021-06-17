@@ -1,9 +1,7 @@
 package tech.wangbin.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-// import tech.wangbin.base.support;
 import com.baomidou.mybatisplus.annotation.IdType;
-import tech.wangbin.base.support.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.time.LocalDateTime;
