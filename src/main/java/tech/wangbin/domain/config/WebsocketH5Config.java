@@ -6,6 +6,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.HandshakeInterceptor;
+import tech.wangbin.domain.controller.WebsocketBallGameHandler;
 import tech.wangbin.domain.controller.WebsocketMessageHandler;
 import tech.wangbin.interceotors.WebSocketMessageInterceptor;
 
@@ -18,7 +19,13 @@ public class WebsocketH5Config implements WebSocketConfigurer {
 
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-    registry.addHandler(new WebsocketMessageHandler(), "/websocket/message/{ID}")
+    registry
+      .addHandler(new WebsocketMessageHandler(), "/websocket/message/{ID}")
+      .setAllowedOrigins("*")
+      .addInterceptors(handshakeInterceptor);
+
+    registry
+      .addHandler(new WebsocketBallGameHandler(), "/ballgame/{ID}")
       .setAllowedOrigins("*")
       .addInterceptors(handshakeInterceptor);
   }

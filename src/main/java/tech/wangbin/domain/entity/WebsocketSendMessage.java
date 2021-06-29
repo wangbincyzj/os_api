@@ -11,6 +11,7 @@ import java.util.List;
 public class WebsocketSendMessage {
   private static final String P2P_MESSAGE = "p2pMessage";
   private static final String UPDATE = "update";
+  private static final String P2P_GAME = "p2pGame";
 
   /**
    * 事件类型
@@ -32,14 +33,18 @@ public class WebsocketSendMessage {
    */
   private long timestamp;
 
-
-  public static TextMessage p2pMessage(T02User fromId, Object data) {
+  public static TextMessage textMessage(T02User fromId, Object data, String type){
     WebsocketSendMessage message = new WebsocketSendMessage();
     message.setFrom(fromId);
     message.setData(data);
-    message.setType(P2P_MESSAGE);
+    message.setType(type);
     message.setTimestamp(new Date().getTime());
     return new TextMessage(JSONObject.toJSONString(message));
+  }
+
+
+  public static TextMessage p2pMessage(T02User fromId, Object data) {
+    return textMessage(fromId, data, P2P_MESSAGE);
   }
 
   public static TextMessage updateMessage(List<T02User> users) {
@@ -49,6 +54,8 @@ public class WebsocketSendMessage {
     message.setTimestamp(new Date().getTime());
     return new TextMessage(JSONObject.toJSONString(message));
   }
+
+
 }
 
 
