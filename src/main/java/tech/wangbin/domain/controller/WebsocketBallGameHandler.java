@@ -22,21 +22,23 @@ public class WebsocketBallGameHandler implements WebSocketHandler {
   @Override
   public void afterConnectionEstablished(WebSocketSession session) throws Exception {
     T02User user = getUser(session);
-    log.info("链接成功:{}", user);
+    log.info("链接成功:{}", user.getUsername());
     users.put(user.getId(), session);
+    sendTo(user.getId(), WebsocketSendMessage.textMessage(null, null, "connected"));
     this.updateOnlineUsers();
   }
 
   @Override
   public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
     WebsocketReceiveMessage message = JSONObject.parseObject((String) webSocketMessage.getPayload(), WebsocketReceiveMessage.class);
-    System.out.println(message);
     // 获取信息来源
     T02User fromUser = getUser(webSocketSession);
     // 获取发送者
     Integer to = message.getTo();
     if (to == 0) {
       waitQueue.add(fromUser.getId());
+      sendTo(fromUser.getId(), WebsocketSendMessage.textMessage(null, null, "waiting"));
+      log.info("进入匹配:{}", fromUser.getUsername());
       if (waitQueue.size() == 2) {
         this.start();
       }
@@ -44,6 +46,8 @@ public class WebsocketBallGameHandler implements WebSocketHandler {
     }
     WebSocketSession session = users.get(to);
     if (session != null) {
+      T02User toUser = getUser(session);
+      log.info("发送: {}, 接受: {}, 内容:{}", fromUser.getUsername(), toUser.getUsername(), message.getData());
       session.sendMessage(WebsocketSendMessage.p2pMessage(fromUser, message.getData()));
     }
   }
@@ -59,11 +63,14 @@ public class WebsocketBallGameHandler implements WebSocketHandler {
 
   @Override
   public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {
-    Integer id = getUser(webSocketSession).getId();
+    T02User user = getUser(webSocketSession);
+    log.info("断开连接:{}", user.getUsername());
+    Integer id = user.getId();
     users.remove(id);
     int i = waitQueue.indexOf(id);
     if(i != -1){
       waitQueue.remove(i);
+      log.info("匹配队列移除:{}, 匹配队列长度:{}", user.getUsername(), waitQueue.size());
     }
     this.updateOnlineUsers();
   }
@@ -108,9 +115,11 @@ public class WebsocketBallGameHandler implements WebSocketHandler {
   private void start() throws IOException {
     T02User p1 = getUser(waitQueue.get(0));
     T02User p2 = getUser(waitQueue.get(1));
-    this.sendTo(p1.getId(), WebsocketSendMessage.textMessage(p2, "", "match"));
-    this.sendTo(p2.getId(), WebsocketSendMessage.textMessage(p1, "", "match"));
+    log.info("匹配成功:{},{}", p1.getUsername(), p2.getUsername());
+    this.sendTo(p1.getId(), WebsocketSendMessage.textMessage(p2, p2, "playerFound"));
+    this.sendTo(p2.getId(), WebsocketSendMessage.textMessage(p1, p1, "playerFound"));
     waitQueue.clear();
+    log.info("匹配队列清空");
   }
 
   private void updateOnlineUsers() {
