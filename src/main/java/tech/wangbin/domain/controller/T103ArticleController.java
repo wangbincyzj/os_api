@@ -1,7 +1,10 @@
 package tech.wangbin.domain.controller;
 
+import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
 import tech.wangbin.domain.service.IT103ArticleService;
 import tech.wangbin.domain.entity.T103Article;
 import tech.wangbin.base.support.*;
@@ -11,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,6 +26,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/domain/article")
 public class T103ArticleController extends BaseController<T103Article> {
+  @Autowired
+  private RestTemplate restTemplate;
 
   public T103ArticleController(IT103ArticleService service) {
     super(service);
@@ -76,4 +82,37 @@ public class T103ArticleController extends BaseController<T103Article> {
   public tech.wangbin.base.support.Resp delete(@PathVariable Integer id) {
     return super.delete(id);
   }
+
+
+  @GetMapping("/sentence")
+  public Resp sentence(@RequestParam(required = false) String date) {
+    if (date == null){
+      date = DateUtil.format(new Date(), "yyyy-MM-dd");
+    }
+    log.info("sentence_date: {}", date);
+    String string = restTemplate.getForObject("http://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&_=1587647616178&title=" + date, String.class);
+    return Resp.ok(string);
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

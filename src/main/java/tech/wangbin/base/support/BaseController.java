@@ -46,12 +46,19 @@ public class BaseController<T extends BaseEntity> {
     return Resp.ok(t.getId());
   }
 
-  public Resp update(T t){
+  public Resp update(T t) {
     t.setUpdateTime(LocalDateTime.now());
     return Resp.ok(baseService.updateById(t));
   }
 
-  public Resp delete(Integer id){
+  public Resp updateBatch(List<T> t) {
+    t.forEach(item -> {
+      item.setUpdateTime(LocalDateTime.now());
+    });
+    return Resp.ok(baseService.updateBatchById(t));
+  }
+
+  public Resp delete(Integer id) {
     return Resp.ok(baseService.removeById(id));
   }
 }

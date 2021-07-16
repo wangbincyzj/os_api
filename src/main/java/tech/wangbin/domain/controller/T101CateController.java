@@ -2,6 +2,7 @@ package tech.wangbin.domain.controller;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import tech.wangbin.domain.service.IT101CateService;
 import tech.wangbin.domain.entity.T101Cate;
 import tech.wangbin.base.support.*;
@@ -9,6 +10,8 @@ import tech.wangbin.base.support.*;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,23 +24,27 @@ import java.util.List;
 @RequestMapping("/domain/cate")
 public class T101CateController extends BaseController<T101Cate> {
 
+  @Autowired
+  private IT101CateService service;
+
   public T101CateController(IT101CateService service) {
     super(service);
   }
 
-  /**
-  * 查询所有或者分页查询
-  * 提供page/size作为分页返回
-  */
-  @Override
+
   @GetMapping(value = "")
-  public tech.wangbin.base.support.Resp getAll(HttpServletRequest req, T101Cate vo,
-    @RequestParam(value = "asc", required = false) List<String> asc,
-    @RequestParam(value = "desc", required = false) List<String> desc) {
-    return super.getAll(req, vo, asc, desc);
+  public tech.wangbin.base.support.Resp getAll(){
+    return Resp.ok(service.getCategoryList());
   }
 
 
+
+
+  @Override
+  @PutMapping("/updateBatch")
+  public Resp updateBatch(@RequestBody List<T101Cate> t) {
+    return super.updateBatch(t);
+  }
 
   /**
   * 通过主键查询单条数据
@@ -74,4 +81,33 @@ public class T101CateController extends BaseController<T101Cate> {
   public tech.wangbin.base.support.Resp delete(@PathVariable Integer id) {
     return super.delete(id);
   }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,6 +5,9 @@ import tech.wangbin.domain.mapper.T101CateMapper;
 import tech.wangbin.domain.service.IT101CateService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import tech.wangbin.domain.vo.CategoryVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class T101CateServiceImpl extends ServiceImpl<T101CateMapper, T101Cate> implements IT101CateService {
 
+  @Override
+  public List<CategoryVo> getCategoryList() {
+    return baseMapper.getCategoryVo();
+  }
 }
