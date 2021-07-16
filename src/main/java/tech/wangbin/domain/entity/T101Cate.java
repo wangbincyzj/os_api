@@ -1,5 +1,7 @@
 package tech.wangbin.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 // import tech.wangbin.base.support;
 import tech.wangbin.base.support.BaseEntity;
@@ -20,6 +22,7 @@ public class T101Cate extends BaseEntity {
 
   private static final long serialVersionUID = 1L;
 
+  @TableId(value = "id", type = IdType.AUTO)
   private Integer id;
 
   private String name;
@@ -29,6 +32,7 @@ public class T101Cate extends BaseEntity {
   private String img;
 
   private Integer rank;
+
 
   private Integer pId;
 
