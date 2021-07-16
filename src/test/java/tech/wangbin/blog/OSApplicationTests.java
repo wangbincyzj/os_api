@@ -9,7 +9,7 @@ class OSApplicationTests {
 
   @Test
   void contextLoads() {
-    System.out.println(SecureUtil.md5("123456dyy"));
+    System.out.println(SecureUtil.md5("test"));
   }
 
 }

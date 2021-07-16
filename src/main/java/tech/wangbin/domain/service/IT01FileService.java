@@ -1,6 +1,7 @@
 package tech.wangbin.domain.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import tech.wangbin.base.support.Resp;
 import tech.wangbin.domain.entity.T01File;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -25,4 +26,6 @@ public interface IT01FileService extends IService<T01File> {
   String getFileUrl(String bucketName, String fileName);
 
   String uploadFile(MultipartFile file, String fileName);
+
+  String uploadFileNew(MultipartFile file);
 }

@@ -2,33 +2,28 @@ package tech.wangbin.domain.controller;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import tech.wangbin.domain.service.IT02UserService;
-import tech.wangbin.domain.entity.T02User;
+import tech.wangbin.domain.service.IT103ArticleService;
+import tech.wangbin.domain.entity.T103Article;
 import tech.wangbin.base.support.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
-import tech.wangbin.domain.service.impl.T02UserServiceImpl;
-import tech.wangbin.domain.service.impl.T02UserServiceRedisImpl;
 
 import java.util.List;
 
 
 /**
  * @author WangBin
- * @since 2021-06-11
+ * @since 2021-07-15
  */
 @Slf4j
 @RestController
-@RequestMapping("/domain/user")
-public class T02UserController extends BaseController<T02User> {
-  @Autowired
-  private T02UserServiceRedisImpl userService;
+@RequestMapping("/domain/article")
+public class T103ArticleController extends BaseController<T103Article> {
 
-  public T02UserController(IT02UserService service) {
+  public T103ArticleController(IT103ArticleService service) {
     super(service);
   }
 
@@ -38,7 +33,7 @@ public class T02UserController extends BaseController<T02User> {
    */
   @Override
   @GetMapping(value = "")
-  public tech.wangbin.base.support.Resp getAll(HttpServletRequest req, T02User vo,
+  public tech.wangbin.base.support.Resp getAll(HttpServletRequest req, T103Article vo,
                                                @RequestParam(value = "asc", required = false) List<String> asc,
                                                @RequestParam(value = "desc", required = false) List<String> desc) {
     return super.getAll(req, vo, asc, desc);
@@ -57,9 +52,10 @@ public class T02UserController extends BaseController<T02User> {
   /**
    * 新增
    */
-  @Override
   @PostMapping(value = "")
-  public tech.wangbin.base.support.Resp insert(@RequestBody T02User vo) {
+  public tech.wangbin.base.support.Resp insert(@RequestBody T103Article vo, HttpServletRequest req) {
+    UserEntity user = (UserEntity) req.getAttribute("user");
+    vo.setUId(user.getId());
     return super.insert(vo);
   }
 
@@ -68,7 +64,7 @@ public class T02UserController extends BaseController<T02User> {
    */
   @Override
   @PutMapping(value = "")
-  public tech.wangbin.base.support.Resp update(@RequestBody T02User vo) {
+  public tech.wangbin.base.support.Resp update(@RequestBody T103Article vo) {
     return super.update(vo);
   }
 
@@ -79,15 +75,5 @@ public class T02UserController extends BaseController<T02User> {
   @DeleteMapping(value = "/{id}")
   public tech.wangbin.base.support.Resp delete(@PathVariable Integer id) {
     return super.delete(id);
-  }
-
-  @PostMapping("/login")
-  public Resp login(@RequestBody T02User user) {
-    T02User loginUser = userService.login(user.getUsername(), user.getPassword());
-    if(loginUser!=null){
-      return Resp.ok(loginUser);
-    }else {
-      return Resp.err("用户未找到");
-    }
   }
 }

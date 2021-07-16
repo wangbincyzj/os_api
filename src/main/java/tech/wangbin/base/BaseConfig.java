@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
-import tech.wangbin.base.utils.CorsConfig;
+import tech.wangbin.base.utils.cors.CorsConfig;
 import tech.wangbin.base.support.JsonFilter;
 
 @Configuration

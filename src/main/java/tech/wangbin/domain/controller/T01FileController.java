@@ -132,4 +132,14 @@ public class T01FileController extends BaseController<T01File> {
       return Resp.ok(fileName);
     }
   }
+
+  @PostMapping("/upload/new")
+  private Resp uploadNew(MultipartFile file){
+    String url = service.uploadFileNew(file);
+    if(url != null){
+      return Resp.ok(url);
+    }else{
+      return Resp.err();
+    }
+  }
 }

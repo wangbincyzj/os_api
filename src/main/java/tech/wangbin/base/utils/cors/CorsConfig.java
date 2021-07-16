@@ -1,4 +1,4 @@
-package tech.wangbin.base.utils;
+package tech.wangbin.base.utils.cors;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

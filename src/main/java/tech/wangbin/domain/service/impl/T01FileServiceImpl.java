@@ -1,7 +1,9 @@
 package tech.wangbin.domain.service.impl;
 
+import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
+import tech.wangbin.base.support.Resp;
 import tech.wangbin.domain.entity.T01File;
 import tech.wangbin.domain.mapper.T01FileMapper;
 import tech.wangbin.domain.service.IT01FileService;
@@ -10,7 +12,10 @@ import org.springframework.stereotype.Service;
 import tech.wangbin.domain.utils.MinioUtil;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Map;
 
@@ -111,6 +116,18 @@ public class T01FileServiceImpl extends ServiceImpl<T01FileMapper, T01File> impl
       return null;
     }catch (Exception e){
       return e.toString();
+    }
+  }
+
+  @Override
+  public String uploadFileNew(MultipartFile file) {
+    String fileName = file.getOriginalFilename();
+    try {
+      minioUtil.putObject("uploadnew", file, fileName);
+      return minioUtil.getObjectUrl("uploadnew", fileName);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
     }
   }
 
