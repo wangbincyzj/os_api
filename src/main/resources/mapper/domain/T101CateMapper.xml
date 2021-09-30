@@ -6,6 +6,17 @@
     select cate.*, article.count as article_count
     from t101_cate as cate
            left join (select c_id, count(*) as count from t103_article group by c_id) as article
-                     on cate.id = article.c_id  where is_delete = 0 order by rank asc
+                     on cate.id = article.c_id
+    where is_delete = 0
+    order by rank asc
+  </select>
+
+  <select id="getCategoryVoById" parameterType="int"  resultType="tech.wangbin.domain.vo.CategoryVo">
+    select cate.*, article.count as article_count
+    from t101_cate as cate
+           left join (select c_id, count(*) as count from t103_article group by c_id) as article
+                     on cate.id = article.c_id
+    where is_delete = 0 and cate.id=#{id}
+    order by rank asc
   </select>
 </mapper>

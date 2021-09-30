@@ -53,7 +53,7 @@ public class T101CateController extends BaseController<T101Cate> {
   @Override
   @GetMapping(value = "/{id}")
   public tech.wangbin.base.support.Resp getById(@PathVariable Integer id) {
-    return super.getById(id);
+    return Resp.ok(service.getCategoryVoById(id));
   }
 
   /**

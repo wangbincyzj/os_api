@@ -24,4 +24,9 @@ public class T101CateServiceImpl extends ServiceImpl<T101CateMapper, T101Cate> i
   public List<CategoryVo> getCategoryList() {
     return baseMapper.getCategoryVo();
   }
+
+  @Override
+  public CategoryVo getCategoryVoById(int id) {
+    return baseMapper.getCategoryVoById(id);
+  }
 }

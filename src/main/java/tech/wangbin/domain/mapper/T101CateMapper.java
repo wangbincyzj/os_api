@@ -16,4 +16,6 @@ import java.util.List;
  */
 public interface T101CateMapper extends BaseMapper<T101Cate> {
   List<CategoryVo> getCategoryVo();
+
+  CategoryVo getCategoryVoById(int id);
 }

@@ -29,6 +29,9 @@ public class T103ArticleController extends BaseController<T103Article> {
   @Autowired
   private RestTemplate restTemplate;
 
+  @Autowired
+  private IT103ArticleService service;
+
   public T103ArticleController(IT103ArticleService service) {
     super(service);
   }
@@ -42,7 +45,8 @@ public class T103ArticleController extends BaseController<T103Article> {
   public tech.wangbin.base.support.Resp getAll(HttpServletRequest req, T103Article vo,
                                                @RequestParam(value = "asc", required = false) List<String> asc,
                                                @RequestParam(value = "desc", required = false) List<String> desc) {
-    return super.getAll(req, vo, asc, desc);
+    // return super.getAll(req, vo, asc, desc);
+    return Resp.ok(service.getArticleVoList());
   }
 
 
@@ -52,7 +56,10 @@ public class T103ArticleController extends BaseController<T103Article> {
   @Override
   @GetMapping(value = "/{id}")
   public tech.wangbin.base.support.Resp getById(@PathVariable Integer id) {
-    return super.getById(id);
+    T103Article article = baseService.getById(id);
+    article.setReadCount(article.getReadCount() + 1);
+    baseService.updateById(article);
+    return Resp.ok(article);
   }
 
   /**

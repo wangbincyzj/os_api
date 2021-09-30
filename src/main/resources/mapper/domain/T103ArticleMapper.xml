@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tech.wangbin.domain.mapper.T103ArticleMapper">
 
+  <select id="getArticleList" parameterType="int" resultType="tech.wangbin.domain.vo.T103ArticleVo">
+    select article.*, comment.count as commentCount
+    from t103_article as article
+        left join (select count(*) from t102_comment where is_delete=0 group by a_id) as comment
+        on comment.a_id = article.id
+  </select>
 </mapper>

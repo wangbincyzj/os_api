@@ -16,4 +16,6 @@ import java.util.List;
  */
 public interface IT101CateService extends IService<T101Cate> {
   List<CategoryVo> getCategoryList();
+
+  CategoryVo getCategoryVoById(int id);
 }

@@ -20,7 +20,8 @@ public class BaseController<T extends BaseEntity> {
   public Resp getAll(HttpServletRequest req, T t, List<String> asc, List<String> desc) {
     // 通过request判断是否有分页数据
     IPage<T> iPage = (IPage<T>) PagerUtil.parse(req, t.getClass());
-    QueryWrapper<T> qw = new QueryWrapper<>(t);
+    QueryWrapper<T> qw = new QueryWrapper<>();
+    qw.setEntity(t);
     if (asc != null) {
       asc.forEach(s -> qw.orderByAsc(s.toString()));
     }
